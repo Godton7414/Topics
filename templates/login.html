@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登錄 - 法律諮詢網</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-top: 1rem;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>用戶登錄</h1>
+        <form action="{{ url_for('login') }}" method="POST" onsubmit="return validateForm()">
+            <label for="account">帳號：</label>
+            <input type="text" id="account" name="account" required>
+            
+            <label for="password">密碼：</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">登錄</button>
+        </form>
+        <div id="error" class="error"></div>
+        <div class="register-link">
+            還沒有帳號？<a href="{{ url_for('register') }}">立即註冊</a>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            var account = document.getElementById('account').value;
+            var password = document.getElementById('password').value;
+            var error = document.getElementById('error');
+
+            if (account.trim() === "") {
+                error.textContent = "請輸入帳號";
+                return false;
+            }
+            if (password.trim() === "") {
+                error.textContent = "請輸入密碼";
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

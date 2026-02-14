@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="chat-section bg-white p-4 rounded shadow">
+        <h2>AI 法律助手</h2>
+        <div id="chat-messages" class="mb-3" style="height: 400px; overflow-y: auto;">
+            <!-- 聊天訊息將在此顯示 -->
+        </div>
+        <div class="input-group">
+            <input type="text" id="user-input" class="form-control" placeholder="請輸入您的法律問題...">
+            <button class="btn btn-primary" onclick="sendMessage()">送出</button>
+        </div>
+    </div>
+</div>
+
+<script>
+async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const messagesDiv = document.getElementById('chat-messages');
+    const query = input.value.trim();
+    
+    if (!query) return;
+    
+    // 添加用戶訊息
+    messagesDiv.innerHTML += `
+        <div class="d-flex justify-content-end mb-3">
+            <div class="bg-primary text-white p-2 rounded-3 max-w-75">
+                ${query}
+            </div>
+        </div>
+    `;
+    
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query })
+        });
+        
+        const data = await response.json();
+        
+        // 添加 AI 回應
+        messagesDiv.innerHTML += `
+            <div class="d-flex mb-3">
+                <div class="bg-light p-2 rounded-3 max-w-75">
+                    ${data.response}
+                </div>
+            </div>
+        `;
+        
+    } catch (error) {
+        console.error('Error:', error);
+        messagesDiv.innerHTML += `
+            <div class="d-flex mb-3">
+                <div class="bg-danger text-white p-2 rounded-3">
+                    發生錯誤，請稍後再試。
+                </div>
+            </div>
+        `;
+    }
+    
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// 允許使用 Enter 鍵發送訊息
+document.getElementById('user-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡我們 - 法律諮詢網</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .contact-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>聯絡我們</h1>
+        <form id="contactForm">
+            <label for="name">姓名：</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">電子郵件：</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">聯絡電話（選填）：</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="subject">主旨：</label>
+            <select id="subject" name="subject" required>
+                <option value="">請選擇</option>
+                <option value="法律諮詢">法律諮詢</option>
+                <option value="網站問題回報">網站問題回報</option>
+                <option value="其他">其他</option>
+            </select>
+
+            <label for="message">訊息：</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <input type="submit" value="提交">
+        </form>
+
+        <div class="contact-info">
+            <h2>其他聯絡方式</h2>
+            <p>電子郵件：s1092733@gm.pu.edu.tw</p>
+            <p>電話：0906879945</p>
+            <p>地址：433台中市沙鹿區台灣大道七段200號</p>
+            <p>社群媒體：<a href="https://www.facebook.com/search/top?q=%E4%BA%9E%E6%B4%B2%E7%B5%B1%E7%A5%9E-%E5%BC%B5%E5%98%89%E8%88%AA" target="_blank">Facebook</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 這裡應該是發送表單數據到伺服器的代碼
+            // 由於這是前端頁面，我們只能模擬發送郵件的行為
+
+            alert('感謝您的來信！我們將盡快回覆您。');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

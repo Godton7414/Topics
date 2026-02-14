@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+<h2>{{ question.title }}</h2>
+<p>類別: {{ question.category_name }} | 提問者: {{ question.username }} | 時間: {{ question.created_at }}</p>
+<p>{{ question.question }}</p>
+
+<h3>回答</h3>
+{% for answer in answers %}
+<div class="answer">
+    <p>{{ answer.content }}</p>
+    <p>回答者: {{ answer.username }} | 時間: {{ answer.created_at }}</p>
+</div>
+{% endfor %}
+
+{% if session.username %}
+<h3>提供回答</h3>
+<form method="POST">
+    <textarea name="answer" required></textarea>
+    <button type="submit">提交回答</button>
+</form>
+{% else %}
+<p>請<a href="{{ url_for('login') }}">登入</a>以提供回答</p>
+{% endif %}
+{% endblock %}

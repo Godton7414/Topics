@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刑法查詢系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-form input[type="text"] {
+            padding: 5px;
+            width: 300px;
+        }
+        .search-form input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .law-article {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .article-number {
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>刑法查詢系統</h1>
+
+        <form class="search-form" method="POST">
+            <input type="text" name="search" placeholder="輸入關鍵字搜索" value="{{ search_query }}">
+            <input type="submit" value="搜索">
+        </form>
+
+        {% for item in data %}
+    <div class="law-article">
+        <p class="article-number">
+            {% if item.article_number.startswith('第') and item.article_number.endswith('條') %}
+                {{ item.article_number }}
+            {% else %}
+                第{{ item.article_number }}條
+            {% endif %}
+        </p>
+        <p>{{ item.law_content }}</p>
+    </div>
+    {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>所有問題</h2>
+    
+    <!-- 搜尋表單 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="{{ url_for('search_questions') }}" method="get" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" 
+                       placeholder="搜尋問題..." 
+                       value="{{ search_query if search_query else '' }}">
+                <button type="submit" class="btn btn-primary">搜尋</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 分類按鈕 -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('all_questions') }}" 
+                   class="btn {% if not current_category %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    所有分類
+                </a>
+                {% for category in categories %}
+                <a href="{{ url_for('all_questions', category=category.id) }}" 
+                   class="btn {% if current_category == category.id %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ category.name }} ({{ category.question_count }})
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 問題列表 -->
+    <div class="list-group mb-4">
+        {% if search_query %}
+        <div class="alert alert-info">
+            搜尋 "{{ search_query }}" 的結果：找到 {{ pagination.total }} 個問題
+        </div>
+        {% endif %}
+        
+        {% for question in pagination.questions %}
+        <a href="{{ url_for('view_question', question_id=question.id) }}" 
+           class="list-group-item list-group-item-action">
+            <h5 class="mb-1">{{ question.title }}</h5>
+            <small>
+                類別: {{ question.category_name }} | 
+                提問者: {{ question.username }} | 
+                時間: {{ question.created_at }}
+            </small>
+        </a>
+        {% endfor %}
+        
+        {% if not pagination.questions %}
+        <div class="list-group-item">
+            {% if search_query %}
+            沒有找到符合 "{{ search_query }}" 的問題。
+            {% else %}
+            此分類目前沒有問題。
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 分頁導航 -->
+    {% if pagination.total_pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- 上一頁 -->
+            <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="
+                    {%- if search_query -%}
+                        {{ url_for('search_questions', q=search_query, page=pagination.page-1) }}
+                    {%- else -%}
+                        {{ url_for('all_questions', category=current_category, page=pagination.page-1) }}
+                    {%- endif -%}
+                ">上一頁</a>
+            </li>
+            
+            <!-- 頁碼 -->
+            {% for page_num in range(1, pagination.total_pages + 1) %}
+            <li class="page-item {% if pagination.page == page_num %}active{% endif %}">
+                <a class="page-link" href="
+                    {%- if search_query -%}
+                        {{ url_for('search_questions', q=search_query, page=page_num) }}
+                    {%- else -%}
+                        {{ url_for('all_questions', category=current_category, page=page_num) }}
+                    {%- endif -%}
+                ">{{ page_num }}</a>
+            </li>
+            {% endfor %}
+            
+            <!-- 下一頁 -->
+            <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
+                <a class="page-link" href="
+                    {%- if search_query -%}
+                        {{ url_for('search_questions', q=search_query, page=pagination.page+1) }}
+                    {%- else -%}
+                        {{ url_for('all_questions', category=current_category, page=pagination.page+1) }}
+                    {%- endif -%}
+                ">下一頁</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+
+    <!-- 顯示頁面資訊 -->
+    <div class="text-center text-muted">
+        第 {{ pagination.page }} 頁，共 {{ pagination.total_pages }} 頁
+        （總共 {{ pagination.total }} 個問題）
+    </div>
+</div>
+{% endblock %}
